@@ -22,6 +22,7 @@ $error_zip_code = null;
 $error_adress = null;
 $error_city = null;
 $error_password = null;
+$error_photo = null;
 
 @$nom = strip_tags($_POST["nom"]);
 @$prenom = strip_tags($_POST["prenom"]);
@@ -32,6 +33,7 @@ $password = @$_POST["password"];
 @$city = strip_tags($_POST["ville"]);
 @$date = strip_tags($_POST["date"]);
 @$phone = strip_tags($_POST["phone"]);
+@$photo = strip_tags($_POST["file"]);
 
 if (isset($_POST['envoyer'])) {
     if (empty($nom)) {
@@ -75,9 +77,34 @@ if (isset($_POST['envoyer'])) {
     if (empty($city)) {
         $error_city .= "<p>Votre ville doit être renseigné</p>";
     }
-    if (empty($error_name) && empty($error_firstname) && empty($error_email) && empty($error_date) && empty($error_phone) && empty($error_zip_code) && empty($error_adress) && empty($error_city) && empty($error_password)) {
+    if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+        $fileName = $_FILES['file']['name'];
+        $fileTmpName = $_FILES['file']['tmp_name'];
+        $fileSize = $_FILES['file']['size'];
+        $fileType = $_FILES['file']['type'];
+        $fileError = $_FILES['file']['error'];
+        $uploadDirectory = 'uploads/';
+        $targetFile = $uploadDirectory . basename($fileName);
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (in_array($fileType, $allowedTypes)) {
+            if ($fileSize <= 2 * 1024 * 1024) {
+                if (move_uploaded_file($fileTmpName, $targetFile)) {
+                    $photo = $fileName;
+                } else {
+                    $error_photo = "<p>Une erreur est survenue lors de l'upload de la photo.</p>";
+                }
+            } else {
+                $error_photo = "<p>Le fichier est trop volumineux (maximum 2 Mo).</p>";
+            }
+        } else {
+            $error_photo = "<p>Seules les images (JPG, PNG, GIF) sont autorisées.</p>";
+        }
+    } else {
+        $error_photo = "<p>Aucune photo n'a été téléchargée ou une erreur est survenue.</p>";
+    }
+    if (empty($error_name) && empty($error_firstname) && empty($error_email) && empty($error_date) && empty($error_zip_code) && empty($error_adress) && empty($error_city) && empty($error_password)) {
         try {
-            $sql = "INSERT INTO abonne(nom, prenom, email, password, date, phone, code_postal, adresse, ville) VALUES (:nom, :prenom, :email, :password, :date, :phone, :code_postal, :adresse, :ville)";
+            $sql = "INSERT INTO abonne(nom, prenom, email, password, date, phone, code_postal, adresse, ville, photo) VALUES (:nom, :prenom, :email, :password, :date, :phone, :code_postal, :adresse, :ville, :photo)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 "nom" => $nom,
@@ -88,7 +115,8 @@ if (isset($_POST['envoyer'])) {
                 "phone" => $phone,
                 "code_postal" => $zip_code,
                 "adresse" => $adress,
-                "ville" => $city
+                "ville" => $city,
+                "photo" => $photo
             ]);
             header("location: connection.php");
         } catch (PDOException $e) {
@@ -99,7 +127,7 @@ if (isset($_POST['envoyer'])) {
 ?>
 
 <div class="formulaire">
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         <div>
             <?php if (empty($error_name)) { ?>
                 <label for="exampleInputEmail1" class="form-label mt-4">Nom: </label>
@@ -225,8 +253,18 @@ if (isset($_POST['envoyer'])) {
                     <?php } ?>
                 </div>
                 <div>
+                <?php if (empty($error_photo)) { ?>
                     <label for="formFile" class="form-label mt-4">Photo de profil</label>
                     <input class="form-control" type="file" id="File" name="file">
+                <?php } ?>
+                <?php if (!empty($error_photo)) { ?>
+                    <div class="has-danger">
+                        <label for="formFile" class="form-label mt-4">Photo de profil: </label>
+                        <input class="form-control is-invalid" type="file" id="File" name="file">
+                        <div class="invalid-feedback"><?php echo $error_photo ?></p>
+                        </div>
+                    </div>    
+                <?php } ?>
                 </div>
                 <button type="submit" class="btn btn-success mt-4" name="envoyer">Envoyer</button>
     </form>

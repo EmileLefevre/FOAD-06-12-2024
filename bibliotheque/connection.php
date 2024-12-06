@@ -3,7 +3,7 @@
 include "pdo.php";
 include('header.php');
 
-
+$error = null;
 if (isset($_POST['connexion'])) {
     $sql = "select * from  abonne where email = :email";
     $statement = $pdo->prepare($sql);
@@ -16,7 +16,7 @@ if (isset($_POST['connexion'])) {
         $_SESSION['connection'] = true;
         $_SESSION['nom'] = $_POST['email'];
     } else {
-        echo "mot de passe incorrect";
+        $error = "Email ou mot de passe incorrect";
         $_SESSION['connection'] = false;
     }
 }
@@ -24,17 +24,26 @@ if (isset($_POST['connexion'])) {
 <h1>Connection</h1>
 <div class="formulaire">
     <form action="" method="post">
-        <div>
+        <?php if (empty($error)) { ?>
+            <div>
             <label for="exampleInputEmail1" class="form-label mt-4">Email:</label>
             <input type="email" class="form-control" placeholder="email" name="email">
         </div>
+                    <?php } ?>
+        <?php if (!empty($error)) { ?>
+            <div class="has-danger">
+                <label for="exampleInputEmail1" class="form-label mt-4">Email: </label>
+                <input type="text" class="form-control is-invalid" placeholder="Email" name="email">
+                <div class="invalid-feedback"><?php echo $error ?></p>
+                </div>
+            </div>
+        <?php } ?>
         <div>
             <label for="exampleInputEmail1" class="form-label mt-4">Mot de passe:</label>
             <input type="password" class="form-control" placeholder="password" name="password">
         </div>
         <button type="submit" class="btn btn-success mt-4" name="connexion">Connexion</button>
         <button type="button" class="btn btn-outline-success mt-4"><a href="inscription.php">Vous n'avez pas de compte ?</a></button>
-
     </form>
 </div>
 </body>
