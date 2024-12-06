@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : ven. 06 déc. 2024 à 11:27
+-- Généré le : ven. 06 déc. 2024 à 15:11
 -- Version du serveur : 8.0.35
 -- Version de PHP : 8.2.20
 
@@ -36,20 +36,20 @@ CREATE TABLE `abonne` (
   `adresse` varchar(100) NOT NULL,
   `code_postal` int NOT NULL,
   `ville` varchar(100) NOT NULL,
-  `phone` int NOT NULL,
-  `date` date DEFAULT NULL
+  `phone` varchar(20) NOT NULL,
+  `date` date DEFAULT NULL,
+  `photo` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `abonne`
 --
 
-INSERT INTO `abonne` (`id_abonne`, `nom`, `prenom`, `email`, `password`, `adresse`, `code_postal`, `ville`, `phone`, `date`) VALUES
-(1, '', 'Guillaume', '', '', '', 0, '', 0, NULL),
-(2, '', 'Benoit', '', '', '', 0, '', 0, NULL),
-(3, '', 'Chloe', '', '', '', 0, '', 0, NULL),
-(4, '', 'Laura', '', '', '', 0, '', 0, NULL),
-(11, 'Lefevre', 'Emile', 'emile.lefevre@epitech.eu', '$2y$10$CupGlt14DU8WzQGn0lU16eqHJ8fDhgcxLYkv2F7Y2W4WIpVHMFCCe', '223 route des moulins', 76890, 'Saint Maclou de Folleville', 648734357, '2024-12-04');
+INSERT INTO `abonne` (`id_abonne`, `nom`, `prenom`, `email`, `password`, `adresse`, `code_postal`, `ville`, `phone`, `date`, `photo`) VALUES
+(1, '', 'Guillaume', '', '', '', 0, '', '0', NULL, ''),
+(2, '', 'Benoit', '', '', '', 0, '', '0', NULL, ''),
+(3, '', 'Chloe', '', '', '', 0, '', '0', NULL, ''),
+(4, '', 'Laura', '', '', '', 0, '', '0', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,7 @@ ALTER TABLE `livre`
 -- AUTO_INCREMENT pour la table `abonne`
 --
 ALTER TABLE `abonne`
-  MODIFY `id_abonne` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_abonne` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT pour la table `emprunt`
@@ -146,7 +146,7 @@ ALTER TABLE `emprunt`
 -- AUTO_INCREMENT pour la table `livre`
 --
 ALTER TABLE `livre`
-  MODIFY `id_livre` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id_livre` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
