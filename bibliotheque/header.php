@@ -29,8 +29,12 @@ if (isset($_SESSION['connection']) && $_SESSION['connection'] === true) { ?>
             <a class="nav-link" href="livre.php">Ajouter un livres</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="deconnection.php">Deconnexion de <?php echo $_SESSION['nom'] ?></a>
+            <a class="nav-link" href="profil.php">Profile</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="deconnection.php">Se deconnecter de : <?php echo $_SESSION['email'] ?></a>
+          </li>
+          <img src="./uploads/<?= $_SESSION['photo']?>" alt="" width="50px" height="50px">
         </ul>
       </div>
     </div>

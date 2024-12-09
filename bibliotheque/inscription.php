@@ -100,7 +100,7 @@ if (isset($_POST['envoyer'])) {
             $error_photo = "<p>Seules les images (JPG, PNG, GIF) sont autorisées.</p>";
         }
     } else {
-        $error_photo = "<p>Aucune photo n'a été téléchargée ou une erreur est survenue.</p>";
+        $error_photo = "<p>Aucune photo n'a été téléchargée ou une erreur est survenue (ce champ n'est pas obligatoire).</p>";
     }
     if (empty($error_name) && empty($error_firstname) && empty($error_email) && empty($error_date) && empty($error_zip_code) && empty($error_adress) && empty($error_city) && empty($error_password)) {
         try {

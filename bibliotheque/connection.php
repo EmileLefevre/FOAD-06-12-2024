@@ -14,7 +14,15 @@ if (isset($_POST['connexion'])) {
     if (password_verify($_POST['password'], $abonne['password'])) {
         header("location:list_livre.php");
         $_SESSION['connection'] = true;
-        $_SESSION['nom'] = $_POST['email'];
+        $_SESSION['nom'] = $abonne['nom'];
+        $_SESSION['prenom'] = $abonne['prenom'];
+        $_SESSION['email'] = $abonne['email'];
+        $_SESSION['date'] = $abonne['date'];
+        $_SESSION['phone'] = $abonne['phone'];
+        $_SESSION['code_postal'] = $abonne['code_postal'];
+        $_SESSION['adresse'] = $abonne['adresse'];
+        $_SESSION['ville'] = $abonne['ville'];
+        $_SESSION['photo'] = $abonne['photo'];
     } else {
         $error = "Email ou mot de passe incorrect";
         $_SESSION['connection'] = false;

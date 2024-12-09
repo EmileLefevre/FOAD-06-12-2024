@@ -23,7 +23,7 @@ if (isset($_POST["envoyer"])) {
 <?php if (!empty($error)) {
     echo $error;
 } ?>
-<?php } else { echo "Vous devez vous connecter pour supprime des livres"; ?>
+<?php } else { echo "Vous devez vous connecter pour supprimer des livres"; ?>
 <br>
 <button type="button" class="btn btn-outline-success"><a href="connection.php">Se connecter</a></button>
 <?php } ?>
